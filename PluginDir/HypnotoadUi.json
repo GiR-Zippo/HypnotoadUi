@@ -1,0 +1,19 @@
+{
+    "Author": "GiR-Zippo",
+    "Name": "HypnotoadUi",
+    "InternalName": "HypnotoadUi",
+    "AssemblyVersion": "0.0.1.0",
+    "Description": "An Ui for the HypnoToad.",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "LightAmp",
+        "HypnoToad"
+    ],
+    "DalamudApiLevel": 10,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "CanUnloadAsync": false,
+    "LoadPriority": 0,
+    "Punchline": "An Ui for the HypnoToad.",
+    "AcceptsFeedback": true
+}

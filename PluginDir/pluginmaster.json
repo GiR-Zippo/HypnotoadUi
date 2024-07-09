@@ -1,0 +1,24 @@
+[
+    {
+        "Author": "GiR-Zippo",
+        "Name": "HypnotoadUi",
+        "InternalName": "HypnotoadUi",
+        "AssemblyVersion": "0.0.1.0",
+        "Description": "An Ui for the HypnoToad.",
+        "ApplicableVersion": "any",
+        "RepoUrl": "https://github.com/GiR-Zippo/HypnotoadUi",
+        "CategoryTags": [
+            "utility",
+            "other"
+        ],
+        "LoadPriority": 0,
+        "IconUrl": "https://raw.githubusercontent.com/GiR-Zippo/Hypnotoad-Plugin/master/Data/toad.png",
+        "Punchline": "An Ui for the HypnoToad.",
+        "IsHide": "False",
+        "IsTestingExclusive": "False",
+        "LastUpdate": "1720547586",
+        "DownloadLinkInstall": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.1.0/latest.zip",
+        "DownloadLinkTesting": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.1.0/latest.zip",
+        "DownloadLinkUpdate":  "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.1.0/latest.zip"
+    }
+]

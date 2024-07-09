@@ -1,0 +1,12 @@
+{
+  "Author": "GiR-Zippo",
+  "Name": "HypnotoadUi",
+  "Punchline": "The frontend for the Hypnotoad.",
+  "Description": "It's just a frontend for the hypnotoad.",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "Hypnotoad",
+    "bards",
+    "LightAmp"
+  ]
+}

@@ -12,6 +12,13 @@ namespace HypnotoadUi.IPC
         public static void SetGfxLowAction(bool low) => SetGfxLow.InvokeAction(low);
 
         /// <summary>
+        /// Send Chat
+        /// </summary>
+
+        public static ICallGateSubscriber<string, object> SendChat;
+        public static void SendChatAction(string msg) => SendChat.InvokeAction(msg);
+
+        /// <summary>
         /// PartyInvite (string)"Name;HomeWorldId"
         /// </summary>
 
@@ -66,6 +73,9 @@ namespace HypnotoadUi.IPC
             SetGfxLow = Api.PluginInterface.GetIpcSubscriber<bool, object>("HypnoToad.SetGfxLow");
             SetGfxLow.Subscribe(SetGfxLowAction);
 
+            SendChat = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.SendChat");
+            SendChat.Subscribe(SendChatAction);
+
             PartyInvite = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.PartyInvite");
             PartyInvite.Subscribe(PartyInviteAction);
 
@@ -89,6 +99,7 @@ namespace HypnotoadUi.IPC
         public static void Dispose()
         {
             SetGfxLow?.Unsubscribe(SetGfxLowAction);
+            SendChat?.Unsubscribe(SendChatAction);
             PartyInvite?.Unsubscribe(PartyInviteAction);
             PartyInviteAccept?.Unsubscribe(PartyInviteAcceptAction);
             PartySetLead?.Unsubscribe(PartySetLeadAction);

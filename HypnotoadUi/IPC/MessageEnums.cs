@@ -8,6 +8,8 @@ public enum MessageType
 
     SetGfx              = 10,    //Set <bool> true=low false=normal
 
+    Chat                = 40,
+
     PartyInviteAccept   = 61,
     PartyPromote        = 62,
     PartyEnterHouse     = 63,

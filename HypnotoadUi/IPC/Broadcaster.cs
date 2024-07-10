@@ -55,6 +55,9 @@ namespace HypnotoadUi.IPC
                             break;
                         IPCProvider.SetGfxLowAction(Convert.ToBoolean(msg.message[0]));
                         break;
+                    case MessageType.Chat:
+                        IPCProvider.SendChatAction(msg.message[0]);
+                        break;
                     case MessageType.PartyInviteAccept:
                         if (localPlayer.GameObjectId == msg.senderGoId)
                             break;

@@ -4,6 +4,8 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using HypnotoadUi.Windows;
 using HypnotoadUi.IPC;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace HypnotoadUi;
 public class HypnotoadUi : IDalamudPlugin
@@ -96,8 +98,27 @@ public class HypnotoadUi : IDalamudPlugin
 
     private void OnCommand(string command, string args)
     {
-        // in response to the slash command, just display our main ui
-        MainWindow.IsOpen = true;
+        var regex = Regex.Match(args, "^(\\w+) ?(.*)");
+        var subcommand = regex.Success && regex.Groups.Count > 1 ? regex.Groups[1].Value : string.Empty;
+
+        switch (subcommand.ToLower())
+        {
+            case "br":
+            case "broadcast":
+            {
+                if (regex.Groups.Count < 2 || string.IsNullOrEmpty(regex.Groups[2].Value))
+                {
+                    Api.ChatGui.Print("[Broadcast] missing parameter");
+                    return;
+                }
+                var arg = regex.Groups[2].Value;
+                if (Api.ClientState.LocalPlayer == null)
+                    return;
+
+                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.Chat, new List<string>() { arg });
+            }
+            break;
+        }
     }
 
     private void OnLogin()

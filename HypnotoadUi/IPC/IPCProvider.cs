@@ -85,6 +85,9 @@ namespace HypnotoadUi.IPC
             PartySetLead = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.PartySetLead");
             PartySetLead.Subscribe(PartySetLeadAction);
 
+            PartyEnterHouse = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyEnterHouse");
+            PartyEnterHouse.Subscribe(PartyEnterHouseAction);
+
             PartyTeleport = Api.PluginInterface.GetIpcSubscriber<bool, object>("HypnoToad.PartyTeleport");
             PartyTeleport.Subscribe(PartyTeleportAction);
 

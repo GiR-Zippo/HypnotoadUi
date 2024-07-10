@@ -88,6 +88,9 @@ public class HypnotoadUi : IDalamudPlugin
         ConfigWindow.Dispose();
         MainWindow.Dispose();
 
+        if (Configuration != null)
+            Configuration.Save();
+
         CommandManager.RemoveHandler(CommandName);
     }
 

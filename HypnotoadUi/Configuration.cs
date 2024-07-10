@@ -1,5 +1,6 @@
 using Dalamud.Configuration;
 using Dalamud.Plugin;
+using HypnotoadUi.Misc;
 using System;
 
 namespace HypnotoadUi
@@ -8,6 +9,9 @@ namespace HypnotoadUi
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; } = 0;
+
+        public bool MultiboxingEnabled { get; set; } = false;
+
 
         public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
 
@@ -18,6 +22,10 @@ namespace HypnotoadUi
         public void Initialize(IDalamudPluginInterface pluginInterface)
         {
             this.pluginInterface = pluginInterface;
+
+            //if mb is enabled
+            if (MultiboxingEnabled)
+                Multiboxing.RemoveHandle();
         }
 
         public void Save()

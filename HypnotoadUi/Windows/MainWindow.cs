@@ -1,9 +1,10 @@
 using System;
-using System.IO;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
+using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
+using HypnotoadUi.Misc;
 using ImGuiNET;
 
 namespace HypnotoadUi.Windows;
@@ -33,68 +34,62 @@ public class MainWindow : Window, IDisposable
     string loadedFilePath = "";
     public override void Draw()
     {
+        /*********************************************************/
+        /***                   Graphic Settings                ***/
+        /*********************************************************/
         if (ImGui.CollapsingHeader("Graphic Settings", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (ImGui.Button("Set Low except me"))
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.SetGfx, new System.Collections.Generic.List<string>() { true.ToString() });
+                GameConfig.SetLowExceptMe();
             ImGui.SameLine();
             if (ImGui.Button("Set Low Locally"))
                 IPCProvider.SetGfxLowAction(true);
             ImGui.SameLine();
             if (ImGui.Button("Reset"))
             {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.SetGfx, new System.Collections.Generic.List<string>() { false.ToString() });
+                GameConfig.Reset();
                 IPCProvider.SetGfxLowAction(false);
             }
             ImGui.Spacing();
             ImGui.Spacing();
             ImGui.Spacing();
         }
+
+        /*********************************************************/
+        /***                      Party Menu                   ***/
+        /*********************************************************/
         if (ImGui.CollapsingHeader("Party", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (ImGui.Button("Invite to party"))
-            {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyInviteAccept, new System.Collections.Generic.List<string>());
-                foreach (var player in LocalPlayerCollector.localPlayers)
-                {
-                    if (player.GamobjectId == Api.ClientState.LocalPlayer.GameObjectId)
-                        continue;
-                    IPCProvider.PartyInviteAction(player.Name + ";" + Convert.ToUInt16(player.HomeWorld).ToString());
-                }
-            }
+                Party.InviteToParty();
             ImGui.SameLine();
             if (ImGui.Button("Gimme the lead"))
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyPromote, new System.Collections.Generic.List<string>()
-                {
-                    Api.ClientState.LocalPlayer.Name.TextValue,
-                    Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
-                });
+                Party.GimmePartyLead();
             ImGui.SameLine();
             if (ImGui.Button("Enter House"))
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyEnterHouse, new System.Collections.Generic.List<string>());
+                Party.EnterHouse();
             if (ImGui.Button("Teleport"))
-            {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyTeleport, new System.Collections.Generic.List<string>());
-                IPCProvider.PartyTeleportAction(true);
-            }
+                Party.Teleport();
             if (ImGui.Button("Follow Me"))
-            {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyFollow, new System.Collections.Generic.List<string>()
-                {
-                    (true).ToString(),
-                    Api.ClientState.LocalPlayer.Name.TextValue,
-                    Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
-                });
-            }
+                Party.FollowMe();
             ImGui.SameLine();
             if (ImGui.Button("Stop Follow"))
-            {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyFollow, new System.Collections.Generic.List<string>()
-                {
-                    (false).ToString()
-                });
-            }
+                Party.StopFollow();
 
+        }
+
+        /*********************************************************/
+        /***                      Misc  Menu                   ***/
+        /*********************************************************/
+        if (ImGui.CollapsingHeader("Misc", ImGuiTreeNodeFlags.DefaultOpen))
+        {
+            var MultiboxingEnabled = plugin.Configuration.MultiboxingEnabled;
+            if (ImGui.Checkbox("Enable Multiboxing", ref MultiboxingEnabled))
+            {
+                Multiboxing.RemoveHandle();
+                plugin.Configuration.MultiboxingEnabled = MultiboxingEnabled;
+                plugin.Configuration.Save();
+            }
         }
     }
 }

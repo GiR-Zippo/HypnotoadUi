@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
+using HypnotoadUi.Formations;
 using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
 using HypnotoadUi.Misc;
@@ -32,6 +33,8 @@ public class MainWindow : Window, IDisposable
 
     private FileDialogManager fileDialogManager = null;
     string loadedFilePath = "";
+    FormationsData selected_formation = null;
+
     public override void Draw()
     {
         /*********************************************************/
@@ -83,12 +86,44 @@ public class MainWindow : Window, IDisposable
         /*********************************************************/
         if (ImGui.CollapsingHeader("Misc", ImGuiTreeNodeFlags.DefaultOpen))
         {
-            var MultiboxingEnabled = plugin.Configuration.MultiboxingEnabled;
-            if (ImGui.Checkbox("Enable Multiboxing", ref MultiboxingEnabled))
+            var AllowMultiBox = plugin.Configuration.AllowMultiBox;
+            if (ImGui.Checkbox("Enable Multiboxing", ref AllowMultiBox))
             {
                 Multiboxing.RemoveHandle();
-                plugin.Configuration.MultiboxingEnabled = MultiboxingEnabled;
+                plugin.Configuration.AllowMultiBox = AllowMultiBox;
                 plugin.Configuration.Save();
+            }
+        }
+
+        /*********************************************************/
+        /***                   Formations  Menu                ***/
+        /*********************************************************/
+        if (ImGui.CollapsingHeader("Formations", ImGuiTreeNodeFlags.DefaultOpen))
+        {
+            if (ImGui.BeginCombo("##combo", selected_formation != null? selected_formation.Name : ""))
+            {
+                var comboData = plugin.Configuration.FormationsList;
+                for (int n = 0; n < plugin.Configuration.FormationsList.Count; n++)
+                {
+                    bool is_selected = (selected_formation == comboData[n]);
+                    if (ImGui.Selectable(comboData[n].Name, is_selected))
+                        selected_formation = comboData[n];
+                    if (is_selected)
+                        ImGui.SetItemDefaultFocus();
+                }
+                ImGui.EndCombo();
+            }
+            ImGui.SameLine();
+            if (ImGui.Button("Load"))
+            {
+                if (selected_formation != null)
+                    FormationFactory.LoadFormation(selected_formation);
+            }
+            ImGui.SameLine();
+            if (ImGui.Button("STOP"))
+            {
+                if (selected_formation != null)
+                    FormationFactory.StopFormation();
             }
         }
     }

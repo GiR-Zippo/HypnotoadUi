@@ -1,25 +1,22 @@
-using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using HypnotoadUi.Windows;
 using HypnotoadUi.IPC;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 namespace HypnotoadUi;
 public class HypnotoadUi : IDalamudPlugin
 {
     public string Name => "HypnotoadUi";
-    private const string CommandName = "/ht";
 
     private static IDalamudPluginInterface PluginInterface { get; set; }
-    private static ICommandManager CommandManager { get; set; }
 
     public Configuration Configuration { get; init; }
     public WindowSystem WindowSystem = new("HypnotoadUi");
 
     public Api api { get; set; }
+
+    private Commands commands { get; set; } = null;
 
     private ConfigWindow ConfigWindow { get; init; }
     private MainWindow MainWindow { get; init; }
@@ -32,7 +29,6 @@ public class HypnotoadUi : IDalamudPlugin
         api = pluginInterface.Create<Api>();
 
         PluginInterface = pluginInterface;
-        CommandManager = commandManager;
 
         this.Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         this.Configuration.Initialize(PluginInterface);
@@ -52,10 +48,8 @@ public class HypnotoadUi : IDalamudPlugin
         WindowSystem.AddWindow(ConfigWindow);
         WindowSystem.AddWindow(MainWindow);
 
-        CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
-        {
-            HelpMessage = "A useful message to display in /xlhelp"
-        });
+        commands = new Commands(commandManager);
+
 
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
@@ -93,32 +87,7 @@ public class HypnotoadUi : IDalamudPlugin
         if (Configuration != null)
             Configuration.Save();
 
-        CommandManager.RemoveHandler(CommandName);
-    }
-
-    private void OnCommand(string command, string args)
-    {
-        var regex = Regex.Match(args, "^(\\w+) ?(.*)");
-        var subcommand = regex.Success && regex.Groups.Count > 1 ? regex.Groups[1].Value : string.Empty;
-
-        switch (subcommand.ToLower())
-        {
-            case "br":
-            case "broadcast":
-            {
-                if (regex.Groups.Count < 2 || string.IsNullOrEmpty(regex.Groups[2].Value))
-                {
-                    Api.ChatGui.Print("[Broadcast] missing parameter");
-                    return;
-                }
-                var arg = regex.Groups[2].Value;
-                if (Api.ClientState.LocalPlayer == null)
-                    return;
-
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.Chat, new List<string>() { arg });
-            }
-            break;
-        }
+        commands.Dispose();
     }
 
     private void OnLogin()

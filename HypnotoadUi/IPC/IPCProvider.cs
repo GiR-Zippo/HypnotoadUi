@@ -68,6 +68,21 @@ namespace HypnotoadUi.IPC
         public static void PartyUnFollowAction() => PartyUnFollow.InvokeAction();
 
 
+        /// <summary>
+        /// MoveTo
+        /// </summary>
+
+        public static ICallGateSubscriber<string, object> MoveTo;
+        public static void MoveToAction(string msg) => MoveTo.InvokeAction(msg);
+
+        /// <summary>
+        /// MoveStop
+        /// </summary>
+
+        public static ICallGateSubscriber<object> MoveStop;
+        public static void MoveStopAction() => MoveStop.InvokeAction();
+
+        
         public static void Initialize()
         {
             SetGfxLow = Api.PluginInterface.GetIpcSubscriber<bool, object>("HypnoToad.SetGfxLow");
@@ -96,6 +111,12 @@ namespace HypnotoadUi.IPC
 
             PartyUnFollow = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyUnFollow");
             PartyUnFollow.Subscribe(PartyUnFollowAction);
+
+            MoveTo = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.MoveTo");
+            MoveTo.Subscribe(MoveToAction);
+
+            MoveStop = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.MoveStop");
+            MoveStop.Subscribe(MoveStopAction);
         }
 
 
@@ -110,6 +131,8 @@ namespace HypnotoadUi.IPC
             PartyTeleport?.Unsubscribe(PartyTeleportAction);
             PartyFollow?.Unsubscribe(PartyFollowAction);
             PartyUnFollow?.Unsubscribe(PartyUnFollowAction);
+            MoveTo?.Unsubscribe(MoveToAction);
+            MoveStop?.Unsubscribe(MoveStopAction);
         }
     }
 }

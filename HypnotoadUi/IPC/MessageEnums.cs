@@ -5,6 +5,8 @@ public enum MessageType
     None                = 0,
     BCAdd               = 1,
     BCRemove            = 2,
+    FormationData       = 3,
+    FormationStop       = 4,
 
     SetGfx              = 10,    //Set <bool> true=low false=normal
 

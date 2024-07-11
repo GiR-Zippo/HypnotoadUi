@@ -1,19 +1,24 @@
 using Dalamud.Configuration;
 using Dalamud.Plugin;
+using HypnotoadUi.Formations;
 using HypnotoadUi.Misc;
 using System;
+using System.Collections.Generic;
 
 namespace HypnotoadUi
 {
     [Serializable]
+
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; } = 0;
 
-        public bool MultiboxingEnabled { get; set; } = false;
+        public List<FormationsData> FormationsList { get; set; } = new List<FormationsData>();
+
+        public Dictionary<long, KeyValuePair<string, string>> ContentIDLookup { get; set; } = new Dictionary<long, KeyValuePair<string, string>>();
 
 
-        public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
+        public bool AllowMultiBox { get; set; } = false;
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]
@@ -24,7 +29,7 @@ namespace HypnotoadUi
             this.pluginInterface = pluginInterface;
 
             //if mb is enabled
-            if (MultiboxingEnabled)
+            if (AllowMultiBox)
                 Multiboxing.RemoveHandle();
         }
 

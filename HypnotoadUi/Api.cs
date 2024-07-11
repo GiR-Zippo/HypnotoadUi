@@ -111,4 +111,8 @@ public class Api
 
     [PluginService]
     public static ITargetManager Targets { get; private set; }
+
+    [PluginService]
+    public static IDataManager Data { get; private set; }
+
 }

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using TinyIpc.Messaging;
 
 namespace HypnotoadUi.IPC
@@ -49,6 +48,13 @@ namespace HypnotoadUi.IPC
                         break;
                     case MessageType.BCRemove:
                         LocalPlayerCollector.Remove(msg.senderGoId, msg.message[0]);
+                        break;
+                    case MessageType.FormationData:
+                        if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
+                            IPCProvider.MoveToAction(msg.message[1] + ";" + msg.message[2]);
+                        break;
+                    case MessageType.FormationStop:
+                        IPCProvider.MoveStopAction();
                         break;
                     case MessageType.SetGfx:
                         if (localPlayer.GameObjectId == msg.senderGoId)

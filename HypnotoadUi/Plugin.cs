@@ -19,6 +19,7 @@ public class HypnotoadUi : IDalamudPlugin
     private Commands commands { get; set; } = null;
 
     private ConfigWindow ConfigWindow { get; init; }
+    private BtBFormation BtBFormation { get; init; }
     private MainWindow MainWindow { get; init; }
 
     private ulong GoId { get; set; } = 0;
@@ -43,9 +44,11 @@ public class HypnotoadUi : IDalamudPlugin
 
         //Build and register the Windows
         ConfigWindow = new ConfigWindow(this);
+        BtBFormation = new BtBFormation(this);
         MainWindow = new MainWindow(this);
 
         WindowSystem.AddWindow(ConfigWindow);
+        WindowSystem.AddWindow(BtBFormation);
         WindowSystem.AddWindow(MainWindow);
 
         commands = new Commands(commandManager);
@@ -53,6 +56,7 @@ public class HypnotoadUi : IDalamudPlugin
 
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
+        PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenBtBUi;
         PluginInterface.UiBuilder.OpenMainUi += UiBuilder_OpenMainUi;
 
         MainWindow.IsOpen = true;
@@ -67,6 +71,11 @@ public class HypnotoadUi : IDalamudPlugin
     private void UiBuilder_OpenConfigUi()
     {
         ConfigWindow.IsOpen = true;
+    }
+
+    private void UiBuilder_OpenBtBUi()
+    {
+        BtBFormation.IsOpen = true;
     }
 
     public void Dispose()
@@ -136,5 +145,10 @@ public class HypnotoadUi : IDalamudPlugin
     public void ToggleDrawConfigUI()
     {
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
+    }
+
+    public void ToggleDrawBtBUI()
+    {
+        BtBFormation.IsOpen = !BtBFormation.IsOpen;
     }
 }

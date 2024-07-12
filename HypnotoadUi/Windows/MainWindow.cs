@@ -93,6 +93,11 @@ public class MainWindow : Window, IDisposable
                 plugin.Configuration.AllowMultiBox = AllowMultiBox;
                 plugin.Configuration.Save();
             }
+            ImGui.SameLine();
+            if (ImGui.Button("Import BtBFormation"))
+            {
+                plugin.ToggleDrawBtBUI();
+            }
         }
 
         /*********************************************************/
@@ -122,8 +127,7 @@ public class MainWindow : Window, IDisposable
             ImGui.SameLine();
             if (ImGui.Button("STOP"))
             {
-                if (selected_formation != null)
-                    FormationFactory.StopFormation();
+                FormationFactory.StopFormation();
             }
         }
     }

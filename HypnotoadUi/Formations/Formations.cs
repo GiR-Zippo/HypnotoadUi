@@ -44,6 +44,7 @@ namespace HypnotoadUi.Formations
 
         public static void StopFormation()
         {
+            IPCProvider.MoveStopAction();
             Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.FormationStop, new List<string>());
         }
 
@@ -60,9 +61,7 @@ namespace HypnotoadUi.Formations
 
         public static FormationsData ConvertBtBFormation(string filename, string item)
         {
-            Api.PluginLog.Debug("Open");
             string data = File.ReadAllText(filename);
-            Api.PluginLog.Debug("Open");
             dynamic jData = JsonConvert.DeserializeObject(data);
             var f = jData["SavedFormationList"];
             foreach (var name in f)

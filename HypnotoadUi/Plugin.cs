@@ -51,12 +51,11 @@ public class HypnotoadUi : IDalamudPlugin
         WindowSystem.AddWindow(BtBFormation);
         WindowSystem.AddWindow(MainWindow);
 
-        commands = new Commands(commandManager);
+        commands = new Commands(this, commandManager);
 
 
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
-        PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenBtBUi;
         PluginInterface.UiBuilder.OpenMainUi += UiBuilder_OpenMainUi;
 
         MainWindow.IsOpen = true;
@@ -140,6 +139,11 @@ public class HypnotoadUi : IDalamudPlugin
     private void DrawUI()
     {
         this.WindowSystem.Draw();
+    }
+
+    public void ToggleDrawMainUI()
+    {
+        MainWindow.IsOpen = !MainWindow.IsOpen;
     }
 
     public void ToggleDrawConfigUI()

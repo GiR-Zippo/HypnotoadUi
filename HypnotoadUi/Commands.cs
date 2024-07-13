@@ -12,9 +12,11 @@ public class Commands : IDisposable
     private const string CommandName = "/ht";
     private const string CommandBrName = "/hbr";
     private static ICommandManager CommandManager { get; set; }
+    private static HypnotoadUi plugin { get; set; }
 
-    public Commands(ICommandManager manager)
+    public Commands(HypnotoadUi pluginmain, ICommandManager manager)
     {
+        plugin = pluginmain;
         CommandManager = manager;
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
@@ -47,6 +49,12 @@ public class Commands : IDisposable
     {
         var regex = Regex.Match(args, "^(\\w+) ?(.*)");
         var subcommand = regex.Success && regex.Groups.Count > 1 ? regex.Groups[1].Value : string.Empty;
+
+        if (subcommand == "")
+        {
+            plugin.ToggleDrawMainUI();
+            return;
+        }
 
         switch (subcommand.ToLower())
         {

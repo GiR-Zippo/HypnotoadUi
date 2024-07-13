@@ -58,7 +58,7 @@ public class HypnotoadUi : IDalamudPlugin
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
         PluginInterface.UiBuilder.OpenMainUi += UiBuilder_OpenMainUi;
 
-        MainWindow.IsOpen = true;
+        MainWindow.IsOpen = Configuration.MainWindowVisible;
         OnLogin();
     }
 
@@ -144,6 +144,7 @@ public class HypnotoadUi : IDalamudPlugin
     public void ToggleDrawMainUI()
     {
         MainWindow.IsOpen = !MainWindow.IsOpen;
+        Configuration.MainWindowVisible = MainWindow.IsOpen;
     }
 
     public void ToggleDrawConfigUI()

@@ -28,7 +28,17 @@ public class MainWindow : Window, IDisposable
 
     public void Dispose()
     {
+    }
 
+
+    public override void OnOpen()
+    {
+        plugin.Configuration.MainWindowVisible = true;
+    }
+
+    public override void OnClose()
+    {
+        plugin.Configuration.MainWindowVisible = false;
     }
 
     private FileDialogManager fileDialogManager = null;

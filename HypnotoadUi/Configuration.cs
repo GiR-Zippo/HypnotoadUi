@@ -20,6 +20,8 @@ namespace HypnotoadUi
 
         public bool AllowMultiBox { get; set; } = false;
 
+        public bool MainWindowVisible { get; set; } = true;
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private IDalamudPluginInterface pluginInterface;

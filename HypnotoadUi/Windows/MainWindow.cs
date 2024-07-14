@@ -140,5 +140,16 @@ public class MainWindow : Window, IDisposable
                 FormationFactory.StopFormation();
             }
         }
+
+        /*********************************************************/
+        /***                  Characters  Menu                 ***/
+        /*********************************************************/
+        if (ImGui.CollapsingHeader("Connected Chars", ImGuiTreeNodeFlags.DefaultOpen))
+        {
+            foreach (var p in LocalPlayerCollector.localPlayers)
+            {
+                ImGui.Text(p.Name);
+            }
+        }
     }
 }

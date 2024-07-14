@@ -12,7 +12,7 @@ namespace HypnotoadUi.IPC
     public class BroadcastMessage
     {
         public MessageType msgType { get; init; } = MessageType.None;
-        public ulong senderGoId { get; init; } = 0;
+        public ulong LocalContentId { get; init; } = 0;
         public List<string> message { get; init; } = new List<string>();
     }
 
@@ -35,7 +35,7 @@ namespace HypnotoadUi.IPC
         {
             Api.Framework.RunOnTick(delegate
             {
-                var localPlayer = Api.ClientState?.LocalPlayer;
+                var localPlayer = Api.ClientState;
 
                 BroadcastMessage msg = JsonConvert.DeserializeObject<BroadcastMessage>(Encoding.UTF8.GetString((byte[])message));
                 if (msg is null) { return; }
@@ -44,10 +44,10 @@ namespace HypnotoadUi.IPC
                 switch (msg.msgType)
                 {
                     case MessageType.BCAdd:
-                        LocalPlayerCollector.Add(msg.senderGoId, msg.message[0], Convert.ToUInt32(msg.message[1]));
+                        LocalPlayerCollector.Add(msg.LocalContentId, msg.message[0], Convert.ToUInt32(msg.message[1]));
                         break;
                     case MessageType.BCRemove:
-                        LocalPlayerCollector.Remove(msg.senderGoId, msg.message[0]);
+                        LocalPlayerCollector.Remove(msg.LocalContentId, msg.message[0]);
                         break;
                     case MessageType.FormationData:
                         if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
@@ -57,7 +57,7 @@ namespace HypnotoadUi.IPC
                         IPCProvider.MoveStopAction();
                         break;
                     case MessageType.SetGfx:
-                        if (localPlayer.GameObjectId == msg.senderGoId)
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         IPCProvider.SetGfxLowAction(Convert.ToBoolean(msg.message[0]));
                         break;
@@ -65,12 +65,12 @@ namespace HypnotoadUi.IPC
                         IPCProvider.SendChatAction(msg.message[0]);
                         break;
                     case MessageType.PartyInviteAccept:
-                        if (localPlayer.GameObjectId == msg.senderGoId)
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         IPCProvider.PartyInviteAcceptAction();
                         break;
                     case MessageType.PartyPromote:
-                        if (!GroupManager.Instance()->GetGroup()->IsEntityIdPartyLeader(localPlayer.EntityId))
+                        if (!GroupManager.Instance()->GetGroup()->IsEntityIdPartyLeader(localPlayer.LocalPlayer.EntityId))
                             break;
                         IPCProvider.PartySetLeadAction(msg.message[0]);
                         break;
@@ -78,12 +78,12 @@ namespace HypnotoadUi.IPC
                         IPCProvider.PartyEnterHouseAction();
                         break;
                     case MessageType.PartyTeleport:
-                        if (localPlayer.GameObjectId == msg.senderGoId)
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         IPCProvider.PartyTeleportAction(false);
                         break;
                     case MessageType.PartyFollow:
-                        if (localPlayer.GameObjectId == msg.senderGoId)
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         if (Convert.ToBoolean(msg.message[0]))
                             IPCProvider.PartyFollowAction(msg.message[1] + ";" + Convert.ToUInt16(msg.message[2]).ToString());
@@ -96,10 +96,10 @@ namespace HypnotoadUi.IPC
 
         }
 
-        public static void SendMessage(ulong selfgoId, MessageType type, List<string> msg)
+        public static void SendMessage(ulong localContentId, MessageType type, List<string> msg)
         {
             MessagebusSend.PublishAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new BroadcastMessage{
-                senderGoId = selfgoId,
+                LocalContentId = localContentId,
                 msgType = type,
                 message = msg
             })));

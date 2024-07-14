@@ -11,7 +11,7 @@ public static class GameConfig
         if (Api.ClientState.LocalPlayer == null)
             return;
 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.SetGfx, new List<string>() { true.ToString() });
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.SetGfx, new List<string>() { true.ToString() });
     }
 
     public static void Reset()
@@ -19,6 +19,6 @@ public static class GameConfig
         if (Api.ClientState.LocalPlayer == null)
             return;
 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.SetGfx, new List<string>() { false.ToString() });
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.SetGfx, new List<string>() { false.ToString() });
     }
 }

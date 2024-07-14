@@ -22,7 +22,7 @@ public class HypnotoadUi : IDalamudPlugin
     private BtBFormation BtBFormation { get; init; }
     private MainWindow MainWindow { get; init; }
 
-    private ulong GoId { get; set; } = 0;
+    private ulong ContentId { get; set; } = 0;
     private string PlayerName { get; set; } = "";
 
     public HypnotoadUi(IDalamudPluginInterface pluginInterface, IChatGui chatGui, IDataManager data, ICommandManager commandManager, IClientState clientState, IPartyList partyList)
@@ -105,13 +105,13 @@ public class HypnotoadUi : IDalamudPlugin
         if (!Api.ClientState.LocalPlayer.IsValid())
             return;
                 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.BCAdd, new System.Collections.Generic.List<string>()
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCAdd, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
             Api.ClientState.LocalPlayer.HomeWorld.Id.ToString()
         });
 
-        GoId = Api.ClientState.LocalPlayer.GameObjectId;
+        ContentId = Api.ClientState.LocalContentId;
         PlayerName = Api.ClientState.LocalPlayer.Name.TextValue;
     }
 
@@ -119,17 +119,17 @@ public class HypnotoadUi : IDalamudPlugin
     {
         if (Api.ClientState.LocalPlayer == null)
         {
-            if (GoId == 0)
+            if (ContentId == 0)
                 return;
-            Broadcaster.SendMessage(GoId, MessageType.BCRemove, new System.Collections.Generic.List<string>()
+            Broadcaster.SendMessage(ContentId, MessageType.BCRemove, new System.Collections.Generic.List<string>()
             {
                 PlayerName
             });
-            GoId = 0;
+            ContentId = 0;
             PlayerName = "";
             return;
         }
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.BCRemove, new System.Collections.Generic.List<string>()
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCRemove, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
             Api.ClientState.LocalPlayer.HomeWorld.Id.ToString()

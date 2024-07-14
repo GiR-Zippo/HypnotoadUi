@@ -42,7 +42,7 @@ public class Commands : IDisposable
         if (Api.ClientState.LocalPlayer == null)
             return;
 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.Chat, new List<string>() { args });
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { args });
     }
 
     private void OnCommand(string command, string args)
@@ -70,7 +70,7 @@ public class Commands : IDisposable
                     if (Api.ClientState.LocalPlayer == null)
                         return;
 
-                    Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.Chat, new List<string>() { arg });
+                    Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { arg });
                 }
                 break;
         }

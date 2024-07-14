@@ -11,10 +11,10 @@ public static class Party
         if (Api.ClientState.LocalPlayer == null)
             return;
 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyInviteAccept, new List<string>());
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyInviteAccept, new List<string>());
         foreach (var player in LocalPlayerCollector.localPlayers)
         {
-            if (player.GamobjectId == Api.ClientState.LocalPlayer.GameObjectId)
+            if (player.LocalContentId == Api.ClientState.LocalContentId)
                 continue;
             IPCProvider.PartyInviteAction(player.Name + ";" + Convert.ToUInt16(player.HomeWorld).ToString());
         }
@@ -25,7 +25,7 @@ public static class Party
         if (Api.ClientState.LocalPlayer == null)
             return;
 
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyPromote, new List<string>()
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyPromote, new List<string>()
                 {
                     Api.ClientState.LocalPlayer.Name.TextValue,
                     Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
@@ -36,14 +36,14 @@ public static class Party
     {
         if (Api.ClientState.LocalPlayer == null)
             return;
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyEnterHouse, new List<string>());
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyEnterHouse, new List<string>());
     }
 
     public static void Teleport()
     {
         if (Api.ClientState.LocalPlayer == null)
             return;
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyTeleport, new System.Collections.Generic.List<string>());
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyTeleport, new List<string>());
         IPCProvider.PartyTeleportAction(true);
     }
 
@@ -51,7 +51,7 @@ public static class Party
     {
         if (Api.ClientState.LocalPlayer == null)
             return;
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyFollow, new System.Collections.Generic.List<string>()
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyFollow, new List<string>()
                 {
                     (true).ToString(),
                     Api.ClientState.LocalPlayer.Name.TextValue,
@@ -63,7 +63,7 @@ public static class Party
     {
         if (Api.ClientState.LocalPlayer == null)
             return;
-        Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.PartyFollow, new System.Collections.Generic.List<string>()
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyFollow, new List<string>()
                 {
                     (false).ToString()
                 });

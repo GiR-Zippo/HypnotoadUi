@@ -33,7 +33,7 @@ namespace HypnotoadUi.Formations
 
             foreach (FormationEntry entry in formation.formationEntry.Values)
             {
-                Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.FormationData, new List<string>()
+                Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.FormationData, new List<string>()
                 {
                     entry.CID.ToString(),
                     FormationCalculation.RelativeToAbsolute(entry, Api.ClientState.LocalPlayer).Key.ToString(),
@@ -45,7 +45,7 @@ namespace HypnotoadUi.Formations
         public static void StopFormation()
         {
             IPCProvider.MoveStopAction();
-            Broadcaster.SendMessage(Api.ClientState.LocalPlayer.GameObjectId, MessageType.FormationStop, new List<string>());
+            Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.FormationStop, new List<string>());
         }
 
         public static List<string> ReadBtBFormationNames(string filename)

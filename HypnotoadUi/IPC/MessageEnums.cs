@@ -7,6 +7,8 @@ public enum MessageType
     BCRemove            = 2,
     FormationData       = 3,
     FormationStop       = 4,
+    ClientLogout        = 5,
+    GameShutdown        = 6,
 
     SetGfx              = 10,    //Set <bool> true=low false=normal
 

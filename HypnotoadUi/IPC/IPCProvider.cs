@@ -82,7 +82,20 @@ namespace HypnotoadUi.IPC
         public static ICallGateSubscriber<object> MoveStop;
         public static void MoveStopAction() => MoveStop.InvokeAction();
 
-        
+        /// <summary>
+        /// CharacterLogout
+        /// </summary>
+
+        public static ICallGateSubscriber<object> CharacterLogout;
+        public static void CharacterLogoutAction() => CharacterLogout.InvokeAction();
+
+        /// <summary>
+        /// GameShutdown
+        /// </summary>
+
+        public static ICallGateSubscriber<object> GameShutdown;
+        public static void GameShutdownAction() => GameShutdown.InvokeAction();
+
         public static void Initialize()
         {
             SetGfxLow = Api.PluginInterface.GetIpcSubscriber<bool, object>("HypnoToad.SetGfxLow");
@@ -117,8 +130,13 @@ namespace HypnotoadUi.IPC
 
             MoveStop = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.MoveStop");
             MoveStop.Subscribe(MoveStopAction);
-        }
 
+            CharacterLogout = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.CharacterLogout");
+            CharacterLogout.Subscribe(CharacterLogoutAction);
+
+            GameShutdown = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.GameShutdown");
+            GameShutdown.Subscribe(GameShutdownAction);
+        }
 
         public static void Dispose()
         {
@@ -133,6 +151,8 @@ namespace HypnotoadUi.IPC
             PartyUnFollow?.Unsubscribe(PartyUnFollowAction);
             MoveTo?.Unsubscribe(MoveToAction);
             MoveStop?.Unsubscribe(MoveStopAction);
+            CharacterLogout?.Unsubscribe(CharacterLogoutAction);
+            GameShutdown?.Unsubscribe(GameShutdownAction);
         }
     }
 }

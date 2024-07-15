@@ -53,6 +53,14 @@ namespace HypnotoadUi.IPC
                         if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
                             IPCProvider.MoveToAction(msg.message[1] + ";" + msg.message[2]);
                         break;
+                    case MessageType.ClientLogout:
+                        if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
+                            IPCProvider.CharacterLogoutAction();
+                        break;
+                    case MessageType.GameShutdown:
+                        if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
+                            IPCProvider.GameShutdownAction();
+                        break;
                     case MessageType.FormationStop:
                         IPCProvider.MoveStopAction();
                         break;

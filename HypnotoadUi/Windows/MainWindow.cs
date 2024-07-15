@@ -1,7 +1,9 @@
 using System;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
+using Dalamud.Interface.Internal.Windows.Data.Widgets;
 using Dalamud.Interface.Windowing;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using HypnotoadUi.Formations;
 using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
@@ -63,9 +65,6 @@ public class MainWindow : Window, IDisposable
                 GameConfig.Reset();
                 IPCProvider.SetGfxLowAction(false);
             }
-            ImGui.Spacing();
-            ImGui.Spacing();
-            ImGui.Spacing();
         }
 
         /*********************************************************/
@@ -78,11 +77,13 @@ public class MainWindow : Window, IDisposable
             ImGui.SameLine();
             if (ImGui.Button("Gimme the lead"))
                 Party.GimmePartyLead();
+
+            if (ImGui.Button("Teleport"))
+                Party.Teleport();
             ImGui.SameLine();
             if (ImGui.Button("Enter House"))
                 Party.EnterHouse();
-            if (ImGui.Button("Teleport"))
-                Party.Teleport();
+
             if (ImGui.Button("Follow Me"))
                 Party.FollowMe();
             ImGui.SameLine();
@@ -149,6 +150,11 @@ public class MainWindow : Window, IDisposable
             foreach (var p in LocalPlayerCollector.localPlayers)
             {
                 ImGui.Text(p.Name);
+                if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.SignOutAlt))
+                    GameConfig.Logout(p.LocalContentId);
+                ImGui.SameLine();
+                if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.PowerOff))
+                    GameConfig.Shutdown(p.LocalContentId);
             }
         }
     }

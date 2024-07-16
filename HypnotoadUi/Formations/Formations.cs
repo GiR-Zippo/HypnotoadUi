@@ -3,6 +3,7 @@ using HypnotoadUi.IPC;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 
@@ -36,8 +37,8 @@ namespace HypnotoadUi.Formations
                 Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.FormationData, new List<string>()
                 {
                     entry.CID.ToString(),
-                    FormationCalculation.RelativeToAbsolute(entry, Api.ClientState.LocalPlayer).Key.ToString(),
-                    (FormationCalculation.RelativeToAbsolute(entry, Api.ClientState.LocalPlayer).Value + 3.1415927f).ToString()
+                    FormationCalculation.RelativeToAbsolute(entry, Api.ClientState.LocalPlayer).Key.ToString("G", CultureInfo.InvariantCulture),
+                    (FormationCalculation.RelativeToAbsolute(entry, Api.ClientState.LocalPlayer).Value + 3.1415927f).ToString("G", CultureInfo.InvariantCulture)
                 });
             }
         }

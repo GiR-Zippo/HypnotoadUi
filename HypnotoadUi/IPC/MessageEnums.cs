@@ -18,5 +18,6 @@ public enum MessageType
     PartyPromote        = 62,
     PartyEnterHouse     = 63,
     PartyTeleport       = 64,
-    PartyFollow         = 65
+    PartyFollow         = 65,
+    PartyLeave          = 66
 }

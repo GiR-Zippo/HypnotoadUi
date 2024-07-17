@@ -18,11 +18,9 @@ namespace HypnotoadUi.Formations
     public class FormationEntry
     {
         public int Index { get; set; } = 0;
-
         public long CID { get; set; } = 0;
-
-        public Vector3 RelativePosition { get; set; } = new Vector3();
-        public float RelativeRotation { get; set; } = 0.0f;
+        public Vector3 RelativePosition;
+        public float RelativeRotation;
     }
 
     public static class FormationFactory

@@ -20,6 +20,7 @@ public class HypnotoadUi : IDalamudPlugin
 
     private ConfigWindow ConfigWindow { get; init; }
     private BtBFormation BtBFormation { get; init; }
+    private FormationEditor FormationEditor { get; init; }
     private MainWindow MainWindow { get; init; }
 
     private ulong ContentId { get; set; } = 0;
@@ -45,10 +46,12 @@ public class HypnotoadUi : IDalamudPlugin
         //Build and register the Windows
         ConfigWindow = new ConfigWindow(this);
         BtBFormation = new BtBFormation(this);
+        FormationEditor = new FormationEditor(this);
         MainWindow = new MainWindow(this);
 
         WindowSystem.AddWindow(ConfigWindow);
         WindowSystem.AddWindow(BtBFormation);
+        WindowSystem.AddWindow(FormationEditor);
         WindowSystem.AddWindow(MainWindow);
 
         commands = new Commands(this, commandManager);
@@ -70,11 +73,6 @@ public class HypnotoadUi : IDalamudPlugin
     private void UiBuilder_OpenConfigUi()
     {
         ConfigWindow.IsOpen = true;
-    }
-
-    private void UiBuilder_OpenBtBUi()
-    {
-        BtBFormation.IsOpen = true;
     }
 
     public void Dispose()
@@ -155,5 +153,10 @@ public class HypnotoadUi : IDalamudPlugin
     public void ToggleDrawBtBUI()
     {
         BtBFormation.IsOpen = !BtBFormation.IsOpen;
+    }
+
+    public void ToggleDrawFormationEditUI()
+    {
+        FormationEditor.IsOpen = !FormationEditor.IsOpen;
     }
 }

@@ -32,6 +32,14 @@ public static class Party
                 });
     }
 
+    public static void Disband()
+    {
+        if (Api.ClientState.LocalPlayer == null)
+            return;
+
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyLeave, new List<string>() { });
+    }
+
     public static void EnterHouse()
     {
         if (Api.ClientState.LocalPlayer == null)

@@ -1,9 +1,7 @@
 using System;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
-using Dalamud.Interface.Internal.Windows.Data.Widgets;
 using Dalamud.Interface.Windowing;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using HypnotoadUi.Formations;
 using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
@@ -17,7 +15,7 @@ public class MainWindow : Window, IDisposable
     private HypnotoadUi plugin;
 
     public MainWindow(HypnotoadUi plugin) : base(
-        "Hypnotoad-Ui", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+        "Hypnotoad-Ui", ImGuiWindowFlags.NoScrollWithMouse)
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
@@ -77,6 +75,9 @@ public class MainWindow : Window, IDisposable
             ImGui.SameLine();
             if (ImGui.Button("Gimme the lead"))
                 Party.GimmePartyLead();
+            ImGui.SameLine();
+            if (ImGui.Button("Disband"))
+                Party.Disband();
 
             if (ImGui.Button("Teleport"))
                 Party.Teleport();
@@ -137,9 +138,11 @@ public class MainWindow : Window, IDisposable
             }
             ImGui.SameLine();
             if (ImGui.Button("STOP"))
-            {
                 FormationFactory.StopFormation();
-            }
+
+            if (ImGui.Button("Open Editor"))
+                plugin.ToggleDrawFormationEditUI();
+
         }
 
         /*********************************************************/

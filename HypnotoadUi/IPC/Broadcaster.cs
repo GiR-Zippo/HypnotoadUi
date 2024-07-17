@@ -82,6 +82,9 @@ namespace HypnotoadUi.IPC
                             break;
                         IPCProvider.PartySetLeadAction(msg.message[0]);
                         break;
+                    case MessageType.PartyLeave:
+                        IPCProvider.PartyLeaveAction();
+                        break;
                     case MessageType.PartyEnterHouse:
                         IPCProvider.PartyEnterHouseAction();
                         break;

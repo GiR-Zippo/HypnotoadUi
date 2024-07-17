@@ -40,6 +40,14 @@ namespace HypnotoadUi.IPC
         public static void PartySetLeadAction(string charname) => PartySetLead.InvokeAction(charname);
 
         /// <summary>
+        /// Set Party Lead
+        /// </summary>
+
+        public static ICallGateSubscriber<object> PartyLeave;
+        public static void PartyLeaveAction() => PartyLeave.InvokeAction();
+        
+
+        /// <summary>
         /// Party Enter House
         /// </summary>
 
@@ -113,6 +121,9 @@ namespace HypnotoadUi.IPC
             PartySetLead = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.PartySetLead");
             PartySetLead.Subscribe(PartySetLeadAction);
 
+            PartyLeave = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyLeave");
+            PartyLeave.Subscribe(PartyLeaveAction);
+
             PartyEnterHouse = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyEnterHouse");
             PartyEnterHouse.Subscribe(PartyEnterHouseAction);
 
@@ -145,6 +156,7 @@ namespace HypnotoadUi.IPC
             PartyInvite?.Unsubscribe(PartyInviteAction);
             PartyInviteAccept?.Unsubscribe(PartyInviteAcceptAction);
             PartySetLead?.Unsubscribe(PartySetLeadAction);
+            PartyLeave?.Unsubscribe(PartyLeaveAction);
             PartyEnterHouse?.Unsubscribe(PartyEnterHouseAction);
             PartyTeleport?.Unsubscribe(PartyTeleportAction);
             PartyFollow?.Unsubscribe(PartyFollowAction);

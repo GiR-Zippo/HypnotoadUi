@@ -152,13 +152,21 @@ public class MainWindow : Window, IDisposable
         {
             foreach (var p in LocalPlayerCollector.localPlayers)
             {
+                ImGui.PushID("##ID" + p.LocalContentId);
                 ImGui.Text(p.Name);
                 if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.SignOutAlt))
                     GameConfig.Logout(p.LocalContentId);
+
                 ImGui.SameLine();
                 if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.PowerOff))
                     GameConfig.Shutdown(p.LocalContentId);
+
+                ImGui.PopID();
             }
+            ImGui.Spacing();
+            ImGui.Spacing();
+            ImGui.Spacing();
+            ImGui.Spacing();
         }
     }
 }

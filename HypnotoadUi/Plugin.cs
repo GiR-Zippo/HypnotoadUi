@@ -3,6 +3,8 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using HypnotoadUi.Windows;
 using HypnotoadUi.IPC;
+using HypnotoadUi.Misc;
+
 
 namespace HypnotoadUi;
 public class HypnotoadUi : IDalamudPlugin
@@ -23,6 +25,8 @@ public class HypnotoadUi : IDalamudPlugin
     private FormationEditor FormationEditor { get; init; }
     private MainWindow MainWindow { get; init; }
 
+    public bool SuspendMainUi { get; set; } = false;
+
     private ulong ContentId { get; set; } = 0;
     private string PlayerName { get; set; } = "";
 
@@ -37,8 +41,8 @@ public class HypnotoadUi : IDalamudPlugin
 
         //Init the IPC - Receiver
         IPCProvider.Initialize();
-
         Broadcaster.Initialize();
+        BackgroundRunner.Instance.Initialize(this);
 
         Api.ClientState.Login += OnLogin;
         Api.ClientState.Logout += OnLogout;
@@ -55,7 +59,6 @@ public class HypnotoadUi : IDalamudPlugin
         WindowSystem.AddWindow(MainWindow);
 
         commands = new Commands(this, commandManager);
-
 
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
@@ -77,6 +80,8 @@ public class HypnotoadUi : IDalamudPlugin
 
     public void Dispose()
     {
+        BackgroundRunner.Instance.Dispose();
+
         Api.ClientState.Login -= OnLogin;
         Api.ClientState.Logout -= OnLogout;
 
@@ -102,7 +107,7 @@ public class HypnotoadUi : IDalamudPlugin
             return;
         if (!Api.ClientState.LocalPlayer.IsValid())
             return;
-                
+
         Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCAdd, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
@@ -136,13 +141,15 @@ public class HypnotoadUi : IDalamudPlugin
 
     private void DrawUI()
     {
-        this.WindowSystem.Draw();
+        if (!SuspendMainUi)
+            this.WindowSystem.Draw();
     }
+
+    public bool MainWindowState() => MainWindow.IsOpen;
 
     public void ToggleDrawMainUI()
     {
         MainWindow.IsOpen = !MainWindow.IsOpen;
-        Configuration.MainWindowVisible = MainWindow.IsOpen;
     }
 
     public void ToggleDrawConfigUI()

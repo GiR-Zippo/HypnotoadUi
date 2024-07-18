@@ -9,9 +9,10 @@ using TinyIpc.Messaging;
 
 namespace HypnotoadUi.IPC
 {
+    [Serializable]
     public class BroadcastMessage
     {
-        public MessageType msgType { get; init; } = MessageType.None;
+        public ushort msgType { get; init; } = (ushort)MessageType.None;
         public ulong LocalContentId { get; init; } = 0;
         public List<string> message { get; init; } = new List<string>();
     }
@@ -36,12 +37,11 @@ namespace HypnotoadUi.IPC
             Api.Framework.RunOnTick(delegate
             {
                 var localPlayer = Api.ClientState;
-
                 BroadcastMessage msg = JsonConvert.DeserializeObject<BroadcastMessage>(Encoding.UTF8.GetString((byte[])message));
                 if (msg is null) { return; }
                 if (localPlayer is null) { return; }
 
-                switch (msg.msgType)
+                switch ((MessageType)msg.msgType)
                 {
                     case MessageType.BCAdd:
                         LocalPlayerCollector.Add(msg.LocalContentId, msg.message[0], Convert.ToUInt32(msg.message[1]));
@@ -109,11 +109,13 @@ namespace HypnotoadUi.IPC
 
         public static void SendMessage(ulong localContentId, MessageType type, List<string> msg)
         {
-            MessagebusSend.PublishAsync(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new BroadcastMessage{
+            var x = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new BroadcastMessage
+            {
                 LocalContentId = localContentId,
-                msgType = type,
+                msgType = (ushort)type,
                 message = msg
-            })));
+            }));
+            MessagebusSend.PublishAsync(x).Wait();
         }
 
         public static void Dispose()

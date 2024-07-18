@@ -62,6 +62,7 @@ public static class Party
         Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.PartyFollow, new List<string>()
                 {
                     (true).ToString(),
+                    Api.ClientState.LocalPlayer.GameObjectId.ToString(),
                     Api.ClientState.LocalPlayer.Name.TextValue,
                     Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
                 });

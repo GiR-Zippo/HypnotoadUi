@@ -97,7 +97,7 @@ namespace HypnotoadUi.IPC
                         if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         if (Convert.ToBoolean(msg.message[0]))
-                            IPCProvider.PartyFollowAction(msg.message[1] + ";" + Convert.ToUInt16(msg.message[2]).ToString());
+                            IPCProvider.PartyFollowAction(msg.message[1] + ";" +msg.message[2] + ";" + Convert.ToUInt16(msg.message[3]).ToString());
                         else
                             IPCProvider.PartyUnFollowAction();
                         break;

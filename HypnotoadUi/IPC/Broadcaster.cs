@@ -77,7 +77,14 @@ namespace HypnotoadUi.IPC
                         IPCProvider.SetGfxLowAction(Convert.ToBoolean(msg.message[0]));
                         break;
                     case MessageType.Chat:
-                        IPCProvider.SendChatAction(msg.message[0]);
+                        if (Convert.ToBoolean(msg.message[0]))
+                            IPCProvider.SendChatAction(msg.message[1]);
+                        else
+                        {
+                            if (localPlayer.LocalContentId == msg.LocalContentId)
+                                break;
+                            IPCProvider.SendChatAction(msg.message[1]);
+                        }
                         break;
                     case MessageType.PartyInviteAccept:
                         if (localPlayer.LocalContentId == msg.LocalContentId)

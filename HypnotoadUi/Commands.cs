@@ -26,6 +26,10 @@ public class Commands : IDisposable
         {
             HelpMessage = "Broadcast your message to all."
         });
+        CommandManager.AddHandler("/hbrn", new CommandInfo(OnCommandBr)
+        {
+            HelpMessage = "Broadcast your message to all except yourself."
+        });
     }
 
     public void Dispose()
@@ -41,8 +45,12 @@ public class Commands : IDisposable
 
         if (Api.ClientState.LocalPlayer == null)
             return;
+        Api.PluginLog.Debug(args);
 
-        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { args });
+        if (command.Equals(CommandBrName))
+            Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { (true).ToString(), args });
+        else
+            Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { (false).ToString(), args });
     }
 
     private void OnCommand(string command, string args)

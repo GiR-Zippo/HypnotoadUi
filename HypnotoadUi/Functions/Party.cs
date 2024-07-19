@@ -16,7 +16,7 @@ public static class Party
         {
             if (player.LocalContentId == Api.ClientState.LocalContentId)
                 continue;
-            IPCProvider.PartyInviteAction(player.Name + ";" + Convert.ToUInt16(player.HomeWorld).ToString());
+            IPCProvider.PartyInviteAction(player.Name, Convert.ToUInt16(player.HomeWorld));
         }
     }
 

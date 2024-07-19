@@ -22,8 +22,8 @@ namespace HypnotoadUi.IPC
         /// PartyInvite (string)"Name;HomeWorldId"
         /// </summary>
 
-        public static ICallGateSubscriber<string, object> PartyInvite;
-        public static void PartyInviteAction(string message) => PartyInvite.InvokeAction(message);
+        public static ICallGateSubscriber<string, ushort, object> PartyInvite;
+        public static void PartyInviteAction(string charater, ushort homeWorldId) => PartyInvite.InvokeAction(charater, homeWorldId);
 
         /// <summary>
         /// PartyInvite Accept
@@ -65,8 +65,8 @@ namespace HypnotoadUi.IPC
         /// Party Follow
         /// </summary>
 
-        public static ICallGateSubscriber<string, object> PartyFollow;
-        public static void PartyFollowAction(string msg) => PartyFollow.InvokeAction(msg);
+        public static ICallGateSubscriber<ulong, string, ushort, object> PartyFollow;
+        public static void PartyFollowAction(ulong goId, string name, ushort worldId) => PartyFollow.InvokeAction(goId, name, worldId);
 
         /// <summary>
         /// Party UnFollow
@@ -80,8 +80,8 @@ namespace HypnotoadUi.IPC
         /// MoveTo
         /// </summary>
 
-        public static ICallGateSubscriber<string, object> MoveTo;
-        public static void MoveToAction(string msg) => MoveTo.InvokeAction(msg);
+        public static ICallGateSubscriber<float, float, float, float, object> MoveTo;
+        public static void MoveToAction(float X, float Y, float Z, float W) => MoveTo.InvokeAction(X,Y,Z,W);
 
         /// <summary>
         /// MoveStop
@@ -112,7 +112,7 @@ namespace HypnotoadUi.IPC
             SendChat = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.SendChat");
             SendChat.Subscribe(SendChatAction);
 
-            PartyInvite = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.PartyInvite");
+            PartyInvite = Api.PluginInterface.GetIpcSubscriber<string, ushort, object>("HypnoToad.PartyInvite");
             PartyInvite.Subscribe(PartyInviteAction);
 
             PartyInviteAccept = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyInviteAccept");
@@ -130,13 +130,13 @@ namespace HypnotoadUi.IPC
             PartyTeleport = Api.PluginInterface.GetIpcSubscriber<bool, object>("HypnoToad.PartyTeleport");
             PartyTeleport.Subscribe(PartyTeleportAction);
 
-            PartyFollow = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.PartyFollow");
+            PartyFollow = Api.PluginInterface.GetIpcSubscriber<ulong, string, ushort, object>("HypnoToad.PartyFollow");
             PartyFollow.Subscribe(PartyFollowAction);
 
             PartyUnFollow = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.PartyUnFollow");
             PartyUnFollow.Subscribe(PartyUnFollowAction);
 
-            MoveTo = Api.PluginInterface.GetIpcSubscriber<string, object>("HypnoToad.MoveTo");
+            MoveTo = Api.PluginInterface.GetIpcSubscriber<float, float, float, float, object>("HypnoToad.MoveTo");
             MoveTo.Subscribe(MoveToAction);
 
             MoveStop = Api.PluginInterface.GetIpcSubscriber<object>("HypnoToad.MoveStop");

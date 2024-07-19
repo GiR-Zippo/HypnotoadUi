@@ -51,7 +51,14 @@ namespace HypnotoadUi.IPC
                         break;
                     case MessageType.FormationData:
                         if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
-                            IPCProvider.MoveToAction(msg.message[1] + ";" + msg.message[2]);
+                        {
+                            string[] temp = msg.message[1].Substring(1, msg.message[1].Length - 2).Split(',');
+                            float x = float.Parse(temp[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture);
+                            float y = float.Parse(temp[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture);
+                            float z = float.Parse(temp[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture);
+                            float w = float.Parse(msg.message[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture);
+                            IPCProvider.MoveToAction(x,y,z, w);
+                        }
                         break;
                     case MessageType.ClientLogout:
                         if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
@@ -97,7 +104,7 @@ namespace HypnotoadUi.IPC
                         if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         if (Convert.ToBoolean(msg.message[0]))
-                            IPCProvider.PartyFollowAction(msg.message[1] + ";" +msg.message[2] + ";" + Convert.ToUInt16(msg.message[3]).ToString());
+                            IPCProvider.PartyFollowAction(Convert.ToUInt64(msg.message[1]), msg.message[2], Convert.ToUInt16(msg.message[3]));
                         else
                             IPCProvider.PartyUnFollowAction();
                         break;

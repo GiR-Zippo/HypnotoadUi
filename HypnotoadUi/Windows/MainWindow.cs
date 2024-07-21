@@ -48,6 +48,21 @@ public class MainWindow : Window, IDisposable
     public override void Draw()
     {
         /*********************************************************/
+        /***                   CamHack Settings                ***/
+        /*********************************************************/
+        if (ImGui.CollapsingHeader("CamHack", ImGuiTreeNodeFlags.DefaultOpen))
+        {
+            if (ImGui.Button("Enable Locally"))
+                CamHack.Enable(plugin, Api.PluginInterface);
+            ImGui.SameLine();
+            if (ImGui.Button("Enable Others"))
+                CamHack.Enable(plugin, Api.PluginInterface);
+            ImGui.SameLine();
+            if (ImGui.Button("Disable"))
+                CamHack.Disable();
+        }
+            
+        /*********************************************************/
         /***                   Graphic Settings                ***/
         /*********************************************************/
         if (ImGui.CollapsingHeader("Graphic Settings", ImGuiTreeNodeFlags.DefaultOpen))
@@ -148,7 +163,7 @@ public class MainWindow : Window, IDisposable
         /*********************************************************/
         /***                  Characters  Menu                 ***/
         /*********************************************************/
-        if (ImGui.CollapsingHeader("Connected Chars", ImGuiTreeNodeFlags.DefaultOpen))
+        if (ImGui.CollapsingHeader("Connected Chars"))
         {
             foreach (var p in LocalPlayerCollector.localPlayers)
             {

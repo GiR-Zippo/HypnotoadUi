@@ -4,6 +4,7 @@ using Dalamud.Plugin.Services;
 using HypnotoadUi.Windows;
 using HypnotoadUi.IPC;
 using HypnotoadUi.Misc;
+using HypnotoadUi.Functions;
 
 
 namespace HypnotoadUi;
@@ -81,7 +82,7 @@ public class HypnotoadUi : IDalamudPlugin
     public void Dispose()
     {
         BackgroundRunner.Instance.Dispose();
-
+        CamHack.Dispose();
         Api.ClientState.Login -= OnLogin;
         Api.ClientState.Logout -= OnLogout;
 

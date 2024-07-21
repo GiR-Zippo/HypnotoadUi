@@ -56,7 +56,7 @@ public class MainWindow : Window, IDisposable
                 CamHack.Enable(plugin, Api.PluginInterface);
             ImGui.SameLine();
             if (ImGui.Button("Enable Others"))
-                CamHack.Enable(plugin, Api.PluginInterface);
+                CamHack.EnableOthers();
             ImGui.SameLine();
             if (ImGui.Button("Disable"))
                 CamHack.Disable();

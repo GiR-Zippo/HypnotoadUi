@@ -1,7 +1,9 @@
 ﻿using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using HypnotoadUi.IPC;
 using Hypostasis.Game.Structures;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace HypnotoadUi.Functions;
@@ -43,12 +45,21 @@ public static unsafe class CamHack
             vtbl.getCameraPosition.Hook.Enable();
     }
 
+    public static void EnableOthers()
+    {
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.CamHack, new List<string>() { (true).ToString() });
+    }
+
     public static void Disable()
     {
-        var vtbl = Common.CameraManager->worldCamera->VTable;
-        if (vtbl.getCameraPosition.Hook == null)
-            return;
-        vtbl.getCameraPosition.Hook.Disable();
+        Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.CamHack, new List<string>() { (false).ToString() });
+        if (Initialized)
+        {
+            var vtbl = Common.CameraManager->worldCamera->VTable;
+            if (vtbl.getCameraPosition.Hook == null)
+                return;
+            vtbl.getCameraPosition.Hook.Disable();
+        }
     }
 
     public static void Dispose()

@@ -1,5 +1,6 @@
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
+using HypnotoadUi.Functions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,13 @@ namespace HypnotoadUi.IPC
         private static readonly TinyMessageBus MessagebusSend = new("DalamudBroadcaster.HypnoToadUi");
         private static readonly TinyMessageBus MessagebusReceive = new("DalamudBroadcaster.HypnoToadUi");
 
+        private static HypnotoadUi plugin { get; set; } = null;
+
         public static IClientState clientState;
 
-        public static void Initialize()
+        public static void Initialize(HypnotoadUi pluginmain)
         {
+            plugin = pluginmain;
             //Init the messagebus
             MessagebusReceive.MessageReceived += (sender, e) => MessageReceived((byte[])e.Message);
         }
@@ -114,6 +118,14 @@ namespace HypnotoadUi.IPC
                             IPCProvider.PartyFollowAction(Convert.ToUInt64(msg.message[1]), msg.message[2], Convert.ToUInt16(msg.message[3]));
                         else
                             IPCProvider.PartyUnFollowAction();
+                        break;
+                    case MessageType.CamHack:
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
+                            break;
+                        if (Convert.ToBoolean(msg.message[0]))
+                            CamHack.Enable(plugin, Api.PluginInterface);
+                        else
+                            CamHack.Disable();
                         break;
                 }
             }, default(TimeSpan), 0, default(CancellationToken));

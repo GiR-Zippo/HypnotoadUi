@@ -19,5 +19,6 @@ public enum MessageType
     PartyEnterHouse     = 63,
     PartyTeleport       = 64,
     PartyFollow         = 65,
-    PartyLeave          = 66
+    PartyLeave          = 66,
+    CamHack             = 70
 }

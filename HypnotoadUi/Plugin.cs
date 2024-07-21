@@ -42,7 +42,7 @@ public class HypnotoadUi : IDalamudPlugin
 
         //Init the IPC - Receiver
         IPCProvider.Initialize();
-        Broadcaster.Initialize();
+        Broadcaster.Initialize(this);
         BackgroundRunner.Instance.Initialize(this);
 
         Api.ClientState.Login += OnLogin;

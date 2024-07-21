@@ -4,8 +4,14 @@
 
 Copy this url to your dalamud settings experimental custom plugin repositories and search for the hypnotoad plugin.
 
-`https://raw.githubusercontent.com/GiR-Zippo/HypnotoadUi/main/PluginDir/pluginmaster.json`
+`https://raw.githubusercontent.com/GiR-Zippo/PluginMaster/main/pluginmaster.json`
 
-## Using it for your own projects
+## Projects used in this one
 
-The Hypnotoad is using [H.Pipes](https://github.com/HavenDV/H.Pipes), the implementation can be done like [this one](https://github.com/GiR-Zippo/LightAmp/blob/main/BardMusicPlayer.DalamudBridge/Helper/Dalamud/DalamudServer.cs) and the documentation for the messages can be found [here](https://github.com/GiR-Zippo/Hypnotoad-Plugin/tree/master/HypnotoadPlugin#readme)
+[Hypostasis](https://github.com/UnknownX7/Hypostasis)
+
+[Cammy](https://github.com/UnknownX7/Cammy)
+
+[OtterGui](https://github.com/Ottermandias/OtterGui)
+
+[TinyIPC](https://github.com/APokorny/tiny_ipc)

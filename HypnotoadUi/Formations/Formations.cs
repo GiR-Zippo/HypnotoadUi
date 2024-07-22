@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 
 namespace HypnotoadUi.Formations
@@ -25,6 +26,44 @@ namespace HypnotoadUi.Formations
 
     public static class FormationFactory
     {
+        public static unsafe FormationsData CreateNewFormation()
+        {
+            FormationsData formation = new FormationsData();
+            int index = 0;
+            foreach (var f in Api.PartyList)
+            {
+                //not the same world? Nope.
+                if (f.World.Id != Api.ClientState.LocalPlayer.CurrentWorld.Id)
+                    continue;
+
+                //get the gob
+                var player = Api.Objects.SearchById(f.ObjectId) as IPlayerCharacter;
+                if (player == null)
+                    continue;
+
+                LocalPlayer lPlayer = LocalPlayerCollector.localPlayers.First(n => n.Name.Equals(player.Name.TextValue) && n.HomeWorld == player.HomeWorld.Id);
+                if (lPlayer == null)
+                    continue;
+
+
+                float rot = player.Rotation;
+                Vector3 pos = player.Position;
+
+                var o = FormationCalculation.AbsoluteToRelative(new KeyValuePair<Vector3, float>(pos, rot), new KeyValuePair<Vector3, float>(Api.ClientState.LocalPlayer.Position, Api.ClientState.LocalPlayer.Rotation));
+
+                FormationEntry entry = new FormationEntry();
+                entry.Index = index;
+                entry.CID = (long)lPlayer.LocalContentId;
+                entry.RelativePosition = o.Key;
+                entry.RelativeRotation = o.Value;
+                index++;
+
+                formation.formationEntry.Add(entry.CID, entry);
+            }
+            formation.Name = "TempName";
+            return formation;
+        }
+
         public static void LoadFormation(FormationsData formation)
         {
             if (Api.ClientState.LocalPlayer == null)
@@ -109,6 +148,12 @@ namespace HypnotoadUi.Formations
             //add the the rel rotation to our absolute
             //Will turned later on by +pi to correct the viewing direction
             return new KeyValuePair<Vector3, float>(Vector3.Transform(relativePosition.Key, rotationMatrix) + absolutPosition.Key, relativePosition.Value + absolutPosition.Value);
+        }
+
+        internal static KeyValuePair<Vector3, float> AbsoluteToRelative(KeyValuePair<Vector3, float> target, KeyValuePair<Vector3, float> center)
+        {
+            Matrix4x4 rotationMatrix = Matrix4x4.CreateRotationY(-center.Value - MathF.PI);
+            return new KeyValuePair<Vector3, float>(Vector3.Transform((target.Key - center.Key), rotationMatrix), (target.Value - center.Value));
         }
     }
 }

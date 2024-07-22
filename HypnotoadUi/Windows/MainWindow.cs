@@ -161,7 +161,6 @@ public class MainWindow : Window, IDisposable
 
             if (ImGui.Button("Open Editor"))
                 plugin.ToggleDrawFormationEditUI();
-
         }
 
         /*********************************************************/

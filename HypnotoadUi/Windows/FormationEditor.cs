@@ -59,7 +59,9 @@ public class FormationEditor : Window, IDisposable
         ImGui.NextColumn();
         if (ImGui.Button("New"))
         {
-
+            var formations = FormationFactory.CreateNewFormation();
+            selected_formation = formations.Name;
+            formation = formations;
         }
         ImGui.SameLine();
         if (ImGui.Button("Test"))
@@ -101,7 +103,7 @@ public class FormationEditor : Window, IDisposable
         {
             ImGui.BeginChild("##DATA");
             ImGui.Separator();
-            ImGui.Text("Formation Name: "+ formation.Name);
+            ImGui.InputText("Formation Name: ", ref formation.Name, 50);
 
             foreach (var p in formation.formationEntry)
             {
@@ -174,7 +176,7 @@ public class FormationEditor : Window, IDisposable
         uint colorOffline = ImGui.GetColorU32(ImGuiColors.DalamudRed);
 
         //get max axis scale
-        float limit = formation.Values.Max(n => n.RelativePosition.X >= n.RelativePosition.Z ? n.RelativePosition.X : n.RelativePosition.Z) + 1f;
+        float limit = formation.Values.Max(n => Math.Abs(n.RelativePosition.X) >= Math.Abs(n.RelativePosition.Z) ? Math.Abs(n.RelativePosition.X) : Math.Abs(n.RelativePosition.Z)) + 1f;
         ImPlot.SetNextAxisLimits(ImAxis.X1, -limit, limit, ImPlotCond.Always);
         ImPlot.SetNextAxisLimits(ImAxis.Y1, -limit, limit, ImPlotCond.Always);
         if (ImPlot.BeginPlot("Formation", new Vector2(-1f), ImPlotFlags.NoTitle | ImPlotFlags.NoLegend | ImPlotFlags.NoMouseText | ImPlotFlags.NoMenus | ImPlotFlags.NoBoxSelect | ImPlotFlags.NoChild | ImPlotFlags.Equal))

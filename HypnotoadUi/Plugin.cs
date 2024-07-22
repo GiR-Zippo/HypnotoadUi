@@ -44,6 +44,7 @@ public class HypnotoadUi : IDalamudPlugin
         IPCProvider.Initialize();
         Broadcaster.Initialize(this);
         BackgroundRunner.Instance.Initialize(this);
+        CamHack.Instance.Initialize();
 
         Api.ClientState.Login += OnLogin;
         Api.ClientState.Logout += OnLogout;
@@ -82,7 +83,6 @@ public class HypnotoadUi : IDalamudPlugin
     public void Dispose()
     {
         BackgroundRunner.Instance.Dispose();
-        CamHack.Dispose();
         Api.ClientState.Login -= OnLogin;
         Api.ClientState.Logout -= OnLogout;
 
@@ -90,6 +90,7 @@ public class HypnotoadUi : IDalamudPlugin
 
         Broadcaster.Dispose();
         IPCProvider.Dispose();
+        CamHack.Instance.Dispose();
 
         this.WindowSystem.RemoveAllWindows();
 

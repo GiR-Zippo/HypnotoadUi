@@ -123,9 +123,9 @@ namespace HypnotoadUi.IPC
                         if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;
                         if (Convert.ToBoolean(msg.message[0]))
-                            CamHack.Enable(plugin, Api.PluginInterface);
+                            CamHack.Instance.Enable();
                         else
-                            CamHack.Disable();
+                            CamHack.Instance.Disable();
                         break;
                 }
             }, default(TimeSpan), 0, default(CancellationToken));

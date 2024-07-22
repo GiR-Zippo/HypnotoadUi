@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
@@ -53,13 +54,16 @@ public class MainWindow : Window, IDisposable
         if (ImGui.CollapsingHeader("CamHack", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (ImGui.Button("Enable Locally"))
-                CamHack.Enable(plugin, Api.PluginInterface);
+                CamHack.Instance.Enable();
             ImGui.SameLine();
             if (ImGui.Button("Enable Others"))
-                CamHack.EnableOthers();
+                CamHack.Instance.EnableOthers();
             ImGui.SameLine();
             if (ImGui.Button("Disable"))
-                CamHack.Disable();
+            {
+                Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.CamHack, new List<string>() { (false).ToString() });
+                CamHack.Instance.Disable();
+            }
         }
             
         /*********************************************************/

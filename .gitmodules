@@ -1,6 +1,3 @@
 [submodule "OtterGui"]
 	path = OtterGui
 	url = https://github.com/Ottermandias/OtterGui.git
-[submodule "HypnotoadUi/Hypostasis"]
-	path = HypnotoadUi/Hypostasis
-	url = https://github.com/UnknownX7/Hypostasis.git

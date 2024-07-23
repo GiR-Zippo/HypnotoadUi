@@ -3,7 +3,7 @@
         "Author": "GiR-Zippo",
         "Name": "HypnotoadUi",
         "InternalName": "HypnotoadUi",
-        "AssemblyVersion": "0.0.2.7",
+        "AssemblyVersion": "0.0.2.8",
         "Description": "An Ui for the HypnoToad. You need to install the HypnoToad too.",
         "ApplicableVersion": "any",
         "RepoUrl": "https://github.com/GiR-Zippo/HypnotoadUi",
@@ -16,9 +16,9 @@
         "Punchline": "An Ui for the HypnoToad.",
         "IsHide": "False",
         "IsTestingExclusive": "False",
-        "LastUpdate": "1721686019",
-        "DownloadLinkInstall": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.7/latest.zip",
-        "DownloadLinkTesting": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.7/latest.zip",
-        "DownloadLinkUpdate":  "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.7/latest.zip"
+        "LastUpdate": "1721753980",
+        "DownloadLinkInstall": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.8/latest.zip",
+        "DownloadLinkTesting": "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.8/latest.zip",
+        "DownloadLinkUpdate":  "https://github.com/GiR-Zippo/HypnotoadUi/releases/download/0.0.2.8/latest.zip"
     }
 ]

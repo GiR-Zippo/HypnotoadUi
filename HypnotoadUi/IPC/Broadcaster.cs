@@ -54,6 +54,8 @@ namespace HypnotoadUi.IPC
                         LocalPlayerCollector.Remove(msg.LocalContentId, msg.message[0]);
                         break;
                     case MessageType.FormationData:
+                        if (localPlayer.LocalContentId == msg.LocalContentId)
+                            break;
                         if (Convert.ToUInt64(msg.message[0]) == Api.ClientState.LocalContentId)
                         {
                             string[] temp = msg.message[1].Substring(1, msg.message[1].Length - 2).Split(',');

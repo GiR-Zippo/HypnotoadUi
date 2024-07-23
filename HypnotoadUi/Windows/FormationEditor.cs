@@ -77,12 +77,13 @@ public class FormationEditor : Window, IDisposable
                 int idx = -1;
                 for (int i = 0; i != configuration.FormationsList.Count; i++)
                 {
-                    if (configuration.FormationsList[i].Name.Equals(formation.Name))
+                    if (configuration.FormationsList[i].Name.Equals(selected_formation))
                     {
                         idx = i;
                         break;
                     }
                 }
+                Api.PluginLog.Debug(idx.ToString());
                 if (idx != -1)
                 {
                     configuration.FormationsList.RemoveAt(idx);

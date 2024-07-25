@@ -84,12 +84,12 @@ namespace HypnotoadUi.IPC
                         break;
                     case MessageType.Chat:
                         if (Convert.ToBoolean(msg.message[0]))
-                            IPCProvider.SendChatAction(msg.message[1]);
+                            Chat.HandleBroadcastCommands(msg.message);
                         else
                         {
                             if (localPlayer.LocalContentId == msg.LocalContentId)
                                 break;
-                            IPCProvider.SendChatAction(msg.message[1]);
+                            Chat.HandleBroadcastCommands(msg.message);
                         }
                         break;
                     case MessageType.PartyInviteAccept:

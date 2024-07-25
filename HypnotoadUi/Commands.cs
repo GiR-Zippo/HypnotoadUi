@@ -45,7 +45,6 @@ public class Commands : IDisposable
 
         if (Api.ClientState.LocalPlayer == null)
             return;
-        Api.PluginLog.Debug(args);
 
         if (command.Equals(CommandBrName))
             Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.Chat, new List<string>() { (true).ToString(), args });

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Dalamud.Hooking;
+using System.Threading;
 
 namespace HypnotoadUi.Functions;
 
@@ -24,7 +25,15 @@ public unsafe class CamHack : IDisposable
     private static Hook<GetCameraPositionDelegate> _getPositionDeltaHook;
     private static void GetCameraPositionDetour(GameCamera* camera, GameObject* target, Vector3* position, bool swapPerson)
     {
-        position->Y += 3000f;
+        if (!Active)
+        {
+            camera->resetLookatHeightOffset = 1;
+        }
+        else
+        {
+            camera->lookAtHeightOffset += 10;
+            position->Y += 3000f;
+        }
     }
 
     public void Initialize()
@@ -54,7 +63,11 @@ public unsafe class CamHack : IDisposable
             return;
 
         Active = false;
-        _getPositionDeltaHook?.Disable();
+        Api.Framework.RunOnTick(delegate
+        {
+            _getPositionDeltaHook?.Disable();
+        }, default(TimeSpan), 10, default(CancellationToken));
+
     }
 
     public void Dispose()

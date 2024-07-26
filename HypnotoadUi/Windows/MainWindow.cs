@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
 using HypnotoadUi.Formations;
 using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
 using HypnotoadUi.Misc;
 using ImGuiNET;
+using OtterGuiInternal.Structs;
 
 namespace HypnotoadUi.Windows;
 
 public class MainWindow : Window, IDisposable
 {
     private HypnotoadUi plugin;
+    private FormationsData selected_formation = null;
 
     public MainWindow(HypnotoadUi plugin) : base(
-        "Hypnotoad-Ui", ImGuiWindowFlags.NoScrollWithMouse)
+        "Hypnotoad-Ui", ImGuiWindowFlags.AlwaysUseWindowPadding)
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
@@ -41,10 +42,6 @@ public class MainWindow : Window, IDisposable
     {
         plugin.Configuration.MainWindowVisible = false;
     }
-
-    private FileDialogManager fileDialogManager = null;
-    string loadedFilePath = "";
-    FormationsData selected_formation = null;
 
     public override void Draw()
     {
@@ -109,7 +106,6 @@ public class MainWindow : Window, IDisposable
             ImGui.SameLine();
             if (ImGui.Button("Stop Follow"))
                 Party.StopFollow();
-
         }
 
         /*********************************************************/
@@ -166,25 +162,71 @@ public class MainWindow : Window, IDisposable
         /*********************************************************/
         /***                  Characters  Menu                 ***/
         /*********************************************************/
+        ImGui.Separator();
         if (ImGui.CollapsingHeader("Connected Chars"))
         {
-            foreach (var p in LocalPlayerCollector.localPlayers)
+            foreach (LocalPlayer p in LocalPlayerCollector.localPlayers)
             {
-                ImGui.PushID("##ID" + p.LocalContentId);
-                ImGui.Text(p.Name);
-                if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.SignOutAlt))
-                    GameConfig.Logout(p.LocalContentId);
+                ImGui.Text(p.Name + " " + p.GetWorldName());
+                {
+                    ImGui.BeginChild(p.LocalContentId.ToString(), new Vector2(0, 90), true, ImGuiWindowFlags.NoScrollbar);
+                    float width = ImGui.GetWindowWidth() * 70 / 100;
+                    ImGui.Columns(2);
+                    ImGui.SetColumnWidth(0, ImGui.GetWindowWidth() - width);
+                    ImGui.SetColumnWidth(1, width);
 
-                ImGui.SameLine();
-                if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.PowerOff))
-                    GameConfig.Shutdown(p.LocalContentId);
+                    ImGui.PushID("##ID" + p.LocalContentId);
+                    bool bce = p.BroadCastEnabled;
+                    if (ImGui.Checkbox("BC Enabled", ref bce))
+                    {
+                        p.BroadCastEnabled = bce;
+                        MiscFunctions.EnableBCForClient(p);
+                    }
 
-                ImGui.PopID();
+                    if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.SignOutAlt))
+                        GameConfig.Logout(p.LocalContentId);
+
+                    ImGui.SameLine();
+                    if (OtterGui.Text.ImUtf8.IconButton(Dalamud.Interface.FontAwesomeIcon.PowerOff))
+                        GameConfig.Shutdown(p.LocalContentId);
+
+                    ImGui.NextColumn();
+                    //DrawProcFrame(p);
+                    ImGui.Text("");
+                    ImGui.PopID();
+                    ImGui.EndChild();
+                }
+                ImGui.Separator();
             }
-            ImGui.Spacing();
-            ImGui.Spacing();
-            ImGui.Spacing();
-            ImGui.Spacing();
         }
+    }
+
+    public void DrawProcFrame(LocalPlayer player)
+    {
+        int AffinityMask = player.Affinity;
+        ImGui.BeginChildFrame(2, new ImVec2(0, 0), ImGuiWindowFlags.HorizontalScrollbar);
+        for (int i = 0; i < ProcAffinity.GetCPUCores(); i++)
+        {
+            ImGui.PushID("##CPU" + i.ToString());
+
+            bool flag = false;
+            if ((AffinityMask & (1 << i)) > 0)
+                flag = true;
+
+            ImGui.Checkbox((i+1).ToString("D2"), ref flag);
+            if ( i != ProcAffinity.GetCPUCores()/2)
+                ImGui.SameLine();
+
+            if (flag)
+                AffinityMask |= 1 << i;
+            else
+                AffinityMask = AffinityMask & ~(1 << i);
+
+            if (AffinityMask != player.Affinity)
+                player.Affinity = AffinityMask;
+                //ProcAffinity.SetAffinity(AffinityMask);
+            ImGui.PopID();
+        }
+        ImGui.EndChildFrame();
     }
 }

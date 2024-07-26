@@ -4,6 +4,7 @@ using HypnotoadUi.Functions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using TinyIpc.Messaging;
@@ -48,11 +49,24 @@ namespace HypnotoadUi.IPC
                 switch ((MessageType)msg.msgType)
                 {
                     case MessageType.BCAdd:
-                        LocalPlayerCollector.Add(msg.LocalContentId, msg.message[0], Convert.ToUInt32(msg.message[1]));
+                        LocalPlayerCollector.Add(msg.LocalContentId, msg.message[0], Convert.ToUInt32(msg.message[1]), Convert.ToInt32(msg.message[2]));
                         break;
                     case MessageType.BCRemove:
                         LocalPlayerCollector.Remove(msg.LocalContentId, msg.message[0]);
                         break;
+                    case MessageType.BCEnabled:
+                        if (localPlayer.LocalContentId == Convert.ToUInt64(msg.message[0]))
+                            LocalPlayerCollector.BroadCastEnabled(Convert.ToBoolean(msg.message[1]));
+                        break;
+                }
+
+                //Check if we listen to the broadcast
+                var p = LocalPlayerCollector.localPlayers.FirstOrDefault(n => n.LocalContentId == localPlayer.LocalContentId && n.BroadCastEnabled);
+                if (p == default)
+                    return;
+
+                switch ((MessageType)msg.msgType)
+                {
                     case MessageType.FormationData:
                         if (localPlayer.LocalContentId == msg.LocalContentId)
                             break;

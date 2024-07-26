@@ -5,10 +5,12 @@ public enum MessageType
     None                = 0,
     BCAdd               = 1,
     BCRemove            = 2,
-    FormationData       = 3,
-    FormationStop       = 4,
-    ClientLogout        = 5,
-    GameShutdown        = 6,
+    BCEnabled           = 3,
+
+    FormationData       = 4,
+    FormationStop       = 5,
+    ClientLogout        = 6,
+    GameShutdown        = 7,
 
     SetGfx              = 10,    //Set <bool> true=low false=normal
 

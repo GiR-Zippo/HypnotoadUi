@@ -113,7 +113,8 @@ public class HypnotoadUi : IDalamudPlugin
         Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCAdd, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
-            Api.ClientState.LocalPlayer.HomeWorld.Id.ToString()
+            Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
+            "0"
         });
 
         ContentId = Api.ClientState.LocalContentId;

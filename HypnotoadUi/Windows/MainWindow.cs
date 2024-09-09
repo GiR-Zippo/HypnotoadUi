@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using Dalamud.Interface.Windowing;
 using HypnotoadUi.Formations;
@@ -121,6 +122,19 @@ public class MainWindow : Window, IDisposable
                 plugin.Configuration.Save();
             }
             ImGui.SameLine();
+
+            var SetWindowTitle = plugin.Configuration.SetWindowTitle;
+            if (ImGui.Checkbox("Set Window Title", ref SetWindowTitle))
+            {
+                if (SetWindowTitle)
+                    MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, Api.ClientState.LocalPlayer.Name.TextValue + "@" + Api.ClientState.LocalPlayer.HomeWorld.GameData.Name.RawString);
+                else
+                    MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, "FINAL FANTASY XIV");
+                plugin.Configuration.SetWindowTitle = SetWindowTitle;
+                plugin.Configuration.Save();
+            }
+
+
             if (ImGui.Button("Import BtBFormation"))
             {
                 plugin.ToggleDrawBtBUI();

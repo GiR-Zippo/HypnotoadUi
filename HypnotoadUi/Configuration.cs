@@ -17,8 +17,9 @@ namespace HypnotoadUi
 
         public Dictionary<long, KeyValuePair<string, string>> ContentIDLookup { get; set; } = new Dictionary<long, KeyValuePair<string, string>>();
 
-
         public bool AllowMultiBox { get; set; } = false;
+
+        public bool SetWindowTitle { get; set; } = false;
 
         public bool MainWindowVisible { get; set; } = true;
 

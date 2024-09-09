@@ -1,8 +1,5 @@
-﻿
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System;
-using HypnotoadUi.IPC;
 
 namespace HypnotoadUi.Functions;
 

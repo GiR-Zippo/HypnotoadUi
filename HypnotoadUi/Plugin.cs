@@ -5,6 +5,7 @@ using HypnotoadUi.Windows;
 using HypnotoadUi.IPC;
 using HypnotoadUi.Misc;
 using HypnotoadUi.Functions;
+using System.Diagnostics;
 
 
 namespace HypnotoadUi;
@@ -119,6 +120,9 @@ public class HypnotoadUi : IDalamudPlugin
 
         ContentId = Api.ClientState.LocalContentId;
         PlayerName = Api.ClientState.LocalPlayer.Name.TextValue;
+
+        if (Configuration.SetWindowTitle)
+            MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle , PlayerName + "@" + Api.ClientState.LocalPlayer.HomeWorld.GameData.Name.RawString);
     }
 
     private void OnLogout()
@@ -140,6 +144,9 @@ public class HypnotoadUi : IDalamudPlugin
             Api.ClientState.LocalPlayer.Name.TextValue,
             Api.ClientState.LocalPlayer.HomeWorld.Id.ToString()
         });
+
+        MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, "FINAL FANTASY XIV");
+
     }
 
     private void DrawUI()

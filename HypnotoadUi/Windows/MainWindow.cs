@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using Dalamud.Interface.Windowing;
+using Dalamud.Utility;
 using HypnotoadUi.Formations;
 using HypnotoadUi.Functions;
 using HypnotoadUi.IPC;
@@ -127,7 +128,7 @@ public class MainWindow : Window, IDisposable
             if (ImGui.Checkbox("Set Window Title", ref SetWindowTitle))
             {
                 if (SetWindowTitle)
-                    MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, Api.ClientState.LocalPlayer.Name.TextValue + "@" + Api.ClientState.LocalPlayer.HomeWorld.GameData.Name.RawString);
+                    MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, Api.ClientState.LocalPlayer.Name.TextValue + "@" + Api.ClientState.LocalPlayer.HomeWorld.ValueNullable?.Name.ToDalamudString().TextValue);
                 else
                     MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, "FINAL FANTASY XIV");
                 plugin.Configuration.SetWindowTitle = SetWindowTitle;

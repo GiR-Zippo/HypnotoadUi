@@ -32,8 +32,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.13" />
-    <PackageReference Include="TinyIpc" Version="4.3.2" />
+    <PackageReference Include="DalamudPackager" Version="11.0.0" />
+    <PackageReference Include="TinyIpc" Version="4.3.3" />
   </ItemGroup>
 
     <ItemGroup>

@@ -6,6 +6,7 @@ using HypnotoadUi.IPC;
 using HypnotoadUi.Misc;
 using HypnotoadUi.Functions;
 using System.Diagnostics;
+using Dalamud.Utility;
 
 
 namespace HypnotoadUi;
@@ -87,7 +88,7 @@ public class HypnotoadUi : IDalamudPlugin
         Api.ClientState.Login -= OnLogin;
         Api.ClientState.Logout -= OnLogout;
 
-        OnLogout();
+        OnLogout(0,0);
 
         Broadcaster.Dispose();
         IPCProvider.Dispose();
@@ -114,7 +115,7 @@ public class HypnotoadUi : IDalamudPlugin
         Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCAdd, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
-            Api.ClientState.LocalPlayer.HomeWorld.Id.ToString(),
+            Api.ClientState.LocalPlayer.HomeWorld.ValueNullable?.RowId.ToString(),
             "0"
         });
 
@@ -122,10 +123,10 @@ public class HypnotoadUi : IDalamudPlugin
         PlayerName = Api.ClientState.LocalPlayer.Name.TextValue;
 
         if (Configuration.SetWindowTitle)
-            MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle , PlayerName + "@" + Api.ClientState.LocalPlayer.HomeWorld.GameData.Name.RawString);
+            MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle , PlayerName + "@" + Api.ClientState.LocalPlayer.HomeWorld.ValueNullable?.Name.ToDalamudString().TextValue);
     }
 
-    private void OnLogout()
+    private void OnLogout(int type, int code)
     {
         if (Api.ClientState.LocalPlayer == null)
         {
@@ -142,7 +143,7 @@ public class HypnotoadUi : IDalamudPlugin
         Broadcaster.SendMessage(Api.ClientState.LocalContentId, MessageType.BCRemove, new System.Collections.Generic.List<string>()
         {
             Api.ClientState.LocalPlayer.Name.TextValue,
-            Api.ClientState.LocalPlayer.HomeWorld.Id.ToString()
+            Api.ClientState.LocalPlayer.HomeWorld.ValueNullable?.RowId.ToString()
         });
 
         MiscFunctions.SetWindowText(Process.GetCurrentProcess().MainWindowHandle, "FINAL FANTASY XIV");

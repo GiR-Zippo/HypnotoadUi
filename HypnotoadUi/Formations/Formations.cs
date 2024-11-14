@@ -33,7 +33,7 @@ namespace HypnotoadUi.Formations
             foreach (var f in Api.PartyList)
             {
                 //not the same world? Nope.
-                if (f.World.Id != Api.ClientState.LocalPlayer.CurrentWorld.Id)
+                if (f.World.RowId != Api.ClientState.LocalPlayer.CurrentWorld.ValueNullable?.RowId)
                     continue;
 
                 //get the gob
@@ -41,7 +41,7 @@ namespace HypnotoadUi.Formations
                 if (player == null)
                     continue;
 
-                LocalPlayer lPlayer = LocalPlayerCollector.localPlayers.First(n => n.Name.Equals(player.Name.TextValue) && n.HomeWorld == player.HomeWorld.Id);
+                LocalPlayer lPlayer = LocalPlayerCollector.localPlayers.First(n => n.Name.Equals(player.Name.TextValue) && n.HomeWorld == player.HomeWorld.ValueNullable?.RowId);
                 if (lPlayer == null)
                     continue;
 
